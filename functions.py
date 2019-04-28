@@ -20,6 +20,6 @@ def get_deck(Card):
     """Creates a list with all cards in a standard deck of cards"""
     suits = ['clubs', 'hearts', 'spades', 'diamonds']
     
-    deck = [Card(value, suit) for value in range(1,14) for suit in suits]
+    deck = [Card(rank, suit) for rank in range(1,14) for suit in suits]
     
     return deck
