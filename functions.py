@@ -2,13 +2,11 @@ import sys
 
 import pygame
 
-from card import Card
-
 def update_screen(settings, screen, deck):
     """Update images on the screen and flip to the new screen"""
     screen.fill(settings.bg_color)
     
-    deck[41].blitme()
+    deck[0].blitme()
     
     pygame.display.flip()
     
@@ -24,7 +22,7 @@ def get_deck(Card, settings, screen):
     deck = [Card(rank, suit, settings, screen) for rank in range(1,14) for suit in suits]
     return deck
 
-def check_deck(Card, settings, screen, deck):
+def check_deck(deck):
     """Tools to check current state of deck."""
     # Delete function once game is finished
     for pcard in deck:

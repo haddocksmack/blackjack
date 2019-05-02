@@ -17,9 +17,8 @@ def run_game():
     
     deck = func.get_deck(Card, settings, screen)
     shuffle(deck)
-    func.check_deck(Card, settings, screen, deck)
-    
-    
+    func.check_deck(deck)
+      
     # Start the main game loop
     while True:
         func.check_events()
