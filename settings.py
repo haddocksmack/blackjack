@@ -7,4 +7,6 @@ class Settings():
         self.screen_height = 770
         self.bg_color = (40, 120, 20)
         
-        
+        # Card settings
+        self.card_width = 138
+        self.card_height = 211

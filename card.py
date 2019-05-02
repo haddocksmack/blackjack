@@ -2,7 +2,7 @@ import pygame
 
 class Card():
     """Class to contain attributes of a card"""
-    def __init__(self, rank, suit, screen):
+    def __init__(self, rank, suit, settings, screen):
         self.rank = rank
         self.suit = suit
         self.screen = screen
@@ -11,7 +11,13 @@ class Card():
         # Load the card images and get its rect
         self.image_path = self.get_image()
         self.front_image = pygame.image.load(self.image_path)
+        self.front_image = pygame.transform.smoothscale(self.front_image,
+                                                        (settings.card_width,
+                                                         settings.card_height))
         self.back_image = pygame.image.load("images/card_back.png")
+        self.back_image = pygame.transform.smoothscale(self.back_image,
+                                                       (settings.card_width,
+                                                        settings.card_height))
         
         self.facestate_image = self.front_image
         self.facedown = False

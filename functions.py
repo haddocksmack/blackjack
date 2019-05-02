@@ -18,10 +18,8 @@ def check_events():
         if event.type == pygame.QUIT:
             sys.exit()
             
-def get_deck(Card, screen):
+def get_deck(Card, settings, screen):
     """Creates a list with all cards in a standard deck of cards"""
-    suits = ['clubs', 'hearts', 'spades', 'diamonds']
-    
-    deck = [Card(rank, suit, screen) for rank in range(1,14) for suit in suits]
-    
+    suits = ['clubs', 'hearts', 'spades', 'diamonds']    
+    deck = [Card(rank, suit, settings, screen) for rank in range(1,14) for suit in suits]
     return deck

@@ -14,7 +14,7 @@ def run_game():
                                       settings.screen_height))
     pygame.display.set_caption('Blackjack')
     
-    deck = func.get_deck(Card, screen)
+    deck = func.get_deck(Card, settings, screen)
     
     # Start the main game loop
     while True:
