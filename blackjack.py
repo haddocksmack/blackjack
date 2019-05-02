@@ -1,6 +1,7 @@
 import sys
 
 import pygame
+from random import shuffle
 
 from settings import Settings
 from card import Card
@@ -15,6 +16,9 @@ def run_game():
     pygame.display.set_caption('Blackjack')
     
     deck = func.get_deck(Card, settings, screen)
+    shuffle(deck)
+    func.check_deck(Card, settings, screen, deck)
+    
     
     # Start the main game loop
     while True:

@@ -23,3 +23,10 @@ def get_deck(Card, settings, screen):
     suits = ['clubs', 'hearts', 'spades', 'diamonds']    
     deck = [Card(rank, suit, settings, screen) for rank in range(1,14) for suit in suits]
     return deck
+
+def check_deck(Card, settings, screen, deck):
+    """Tools to check current state of deck."""
+    # Delete function once game is finished
+    for pcard in deck:
+        print(str(pcard.rank) + " " + pcard.suit)
+        
