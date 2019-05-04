@@ -6,16 +6,18 @@ from random import shuffle
 from settings import Settings
 from card import Card
 import functions as func
+from game_stats import GameStats
 
 def run_game():
     # Initialize pygame, settings, and screen objects
     pygame.init()
     settings = Settings()
+    stats = GameStats()
     screen = pygame.display.set_mode((settings.screen_width,
                                       settings.screen_height))
     pygame.display.set_caption('Blackjack')
     
-    deck = func.get_deck(Card, settings, screen)
+    deck = stats.deck
     shuffle(deck)
     func.check_deck(deck)
       
@@ -23,6 +25,6 @@ def run_game():
     while True:
         func.check_events()
         
-        func.update_screen(settings, screen, deck)
+        func.update_screen(settings, stats, screen, deck)
         
 run_game()
