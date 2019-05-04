@@ -19,3 +19,6 @@ class GameStats():
         self.discard = []
         self.dealer_hand = []
         self.player_hand = []
+        
+        self.game_active = True
+        self.hand_dealt = False

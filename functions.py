@@ -2,12 +2,13 @@ import sys
 
 import pygame
 
-def update_screen(settings, stats, screen, deck):
+def update_screen(settings, stats, screen):
     """Update images on the screen and flip to the new screen"""
     screen.fill(settings.bg_color)
-    
-    if len(stats.deck) > 52:
-        first_deal(settings, stats)
+    for card in stats.player_hand:
+        card.render_card()
+    for card in stats.dealer_hand:
+        card.render_card()
     
     pygame.display.flip()
     
@@ -30,24 +31,23 @@ def first_deal(settings, stats):
     deal_dealer(settings, stats)
     deal_player(settings, stats)
     deal_dealer(settings, stats)
+    stats.hand_dealt = True
     
 def deal_player(settings, stats):
     """Deals a card to the player and displays it"""
-    num = len(stats.player_hand)
     stats.player_hand.append(stats.deck.pop(0))
-    stats.player_hand[-1].topleft = ((80 + (20 * num + settings.card_width
-                                            * num)), 650)
-    stats.player_hand[-1].render_card(settings)
+    num = len(stats.player_hand)
+    stats.player_hand[-1].topleft = ((20 * num + settings.card_width * num), 450)
+    #stats.player_hand[-1].render_card()
     
 def deal_dealer(settings, stats):
     """Deals a card to the dealer and displays it"""
+    stats.dealer_hand.append(stats.deck.pop(0))
     num = len(stats.dealer_hand)
     if num == 1:
         stats.dealer_hand[-1].facedown = True
-    stats.dealer_hand.append(stats.deck.pop(0))
-    stats.dealer_hand[-1].topleft = ((80 + (20 * num + settings.card_width
-                                            * num)), 100)
-    stats.dealerer_hand[-1].render_card(settings)
+    stats.dealer_hand[-1].topleft = ((20 * num + settings.card_width * num), 80)
+    #stats.dealer_hand[-1].render_card()
     
 def check_deck(deck):
     """Tools to check current state of deck."""

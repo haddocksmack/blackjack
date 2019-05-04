@@ -19,12 +19,16 @@ def run_game():
     
     deck = stats.deck
     shuffle(deck)
-    func.check_deck(deck)
       
     # Start the main game loop
     while True:
         func.check_events()
         
-        func.update_screen(settings, stats, screen, deck)
+        if stats.game_active:
+            if not stats.hand_dealt:
+                func.first_deal(settings, stats)
+                func.check_deck(deck)
+            
+        func.update_screen(settings, stats, screen)
         
 run_game()
