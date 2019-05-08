@@ -12,11 +12,11 @@ def run_game():
     # Initialize pygame, settings, and screen objects
     pygame.init()
     settings = Settings()
-    stats = GameStats()
     screen = pygame.display.set_mode((settings.screen_width,
                                       settings.screen_height))
+    stats = GameStats(screen)
     pygame.display.set_caption('Blackjack')
-    
+    func.get_deck(Card, settings, stats, screen)
     deck = stats.deck
     shuffle(deck)
       
@@ -27,7 +27,7 @@ def run_game():
         if stats.game_active:
             if not stats.hand_dealt:
                 func.first_deal(settings, stats)
-                func.check_deck(deck)
+                func.check_deck(deck, stats)
             
         func.update_screen(settings, stats, screen)
         

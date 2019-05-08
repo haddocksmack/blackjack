@@ -2,25 +2,28 @@ import pygame
 
 class Card():
     """Class to contain attributes of a card"""
-    def __init__(self, rank, suit, settings, screen):
+    
+    def __init__(self, rank, suit, settings, stats, screen):
+        """Initializes card settings"""
         self.rank = rank
         self.suit = suit
         self.screen = screen
         self.value = 0
+        self.hand_value = stats.hand_value
         
         # Card image settings
         self.topleft = (0, 0)
         self.size = (settings.card_width, settings.card_height)
         self.image_path = 'images/' + str(self.rank) + '_' + self.suit + '.png'
         self.facedown = False
-        self.screen_rect = self.screen.get_rect()
+        self.screen_rect = stats.screen_rect
         
     def get_card_value(self, hand_value):
         """Assigns correct score to card"""
         if self.rank > 10:
             self.value = 10
         elif self.rank == 1:
-            if hand_value > 10:
+            if self.hand_value > 10:
                 self.value = 1
             else:
                 self.value = 11

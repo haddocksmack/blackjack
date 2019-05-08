@@ -1,24 +1,20 @@
-import pygame
-
-import functions as func
-
-from card import Card
-from settings import Settings
-
-settings = Settings()
-screen = pygame.display.set_mode((settings.screen_width,
-                                  settings.screen_height))
-
 class GameStats():
     """A class to store the stats of Blackjack"""
     
-    def __init__(self):
+    def __init__(self, screen):
         """Initializes stats"""
+        self.screen = screen
+        self.screen_rect = self.screen.get_rect()
+        self.screen_bottom = self.screen_rect.bottom
+        
         # Lists needed to manage deck/hands
-        self.deck = func.get_deck(Card, settings, screen)
+        self.deck = []
         self.discard = []
         self.dealer_hand = []
         self.player_hand = []
+        self.dealer_hand_value = 0
+        self.player_hand_value = 0
+        self.hand_value = 0
         
         self.game_active = True
         self.hand_dealt = False
