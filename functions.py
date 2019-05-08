@@ -2,13 +2,15 @@ import sys
 
 import pygame
 
-def update_screen(settings, stats, screen):
+def update_screen(settings, stats, screen, deal_button):
     """Update images on the screen and flip to the new screen"""
     screen.fill(settings.bg_color)
     for card in stats.player_hand:
         card.render_card()
     for card in stats.dealer_hand:
         card.render_card()
+        
+    deal_button.draw_button()
     
     pygame.display.flip()
     

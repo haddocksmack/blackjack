@@ -10,3 +10,9 @@ class Settings():
         # Card settings
         self.card_width = 138
         self.card_height = 211
+        
+        # Button settings
+        # Deal button
+        self.deal_msg = "DEAL"
+        self.deal_loc = (100, 100)
+        self.deal_button_color = (0, 0, 0)

@@ -5,6 +5,7 @@ from random import shuffle
 
 from settings import Settings
 from card import Card
+from button import Button
 import functions as func
 from game_stats import GameStats
 
@@ -16,6 +17,12 @@ def run_game():
                                       settings.screen_height))
     stats = GameStats(screen)
     pygame.display.set_caption('Blackjack')
+    
+    # Make the buttons
+    deal_button = Button(settings, stats, screen, settings.deal_msg,
+                         settings.deal_loc, settings.deal_button_color)
+    
+    # Make and shuffle the deck
     func.get_deck(Card, settings, stats, screen)
     deck = stats.deck
     shuffle(deck)
@@ -25,10 +32,11 @@ def run_game():
         func.check_events()
         
         if stats.game_active:
+            
             if not stats.hand_dealt:
                 func.first_deal(settings, stats)
                 func.check_deck(deck, stats)
             
-        func.update_screen(settings, stats, screen)
+        func.update_screen(settings, stats, screen, deal_button)
         
 run_game()
