@@ -1,5 +1,3 @@
-import sys
-
 import pygame
 from random import shuffle
 
@@ -16,27 +14,11 @@ def run_game():
     screen = pygame.display.set_mode((settings.screen_width,
                                       settings.screen_height))
     stats = GameStats(screen)
+    
     pygame.display.set_caption('Blackjack')
     
     # Make the buttons
-    play_button = Button(settings, stats, screen, settings.play_msg,
-                         settings.play_loc, settings.play_button_color)
-    
-    hit_button = Button(settings, stats, screen, settings.hit_msg,
-                         settings.hit_loc, settings.hit_button_color)
-    stay_button = Button(settings, stats, screen, settings.stay_msg,
-                         settings.stay_loc, settings.stay_button_color)
-    
-    deal_button = Button(settings, stats, screen, settings.deal_msg,
-                         settings.deal_loc, settings.deal_button_color)
-    bet_1_button = Button(settings, stats, screen, settings.bet_1_msg,
-                         settings.bet_1_loc, settings.bet_1_button_color,
-                          (0, 0, 0))
-    bet_5_button = Button(settings, stats, screen, settings.bet_5_msg,
-                         settings.bet_5_loc, settings.bet_5_button_color)
-    bet_10_button = Button(settings, stats, screen, settings.bet_10_msg,
-                         settings.bet_10_loc, settings.bet_10_button_color)
-    bet_buttons = [deal_button, bet_1_button, bet_5_button, bet_10_button]
+    func.make_buttons(settings, stats, screen, Button)
     
     # Make and shuffle the deck
     func.get_deck(Card, settings, stats, screen)
@@ -45,7 +27,7 @@ def run_game():
       
     # Start the main game loop
     while True:
-        func.check_events()
+        func.check_events(stats)
         
         if stats.game_active:
             
@@ -53,6 +35,6 @@ def run_game():
                 func.first_deal(settings, stats)
                 func.check_deck(deck, stats)
             
-        func.update_screen(settings, stats, screen, bet_buttons)
+        func.update_screen(settings, stats, screen)
         
 run_game()

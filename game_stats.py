@@ -16,5 +16,10 @@ class GameStats():
         self.player_hand_value = 0
         self.hand_value = 0
         
-        self.game_active = True
+        self.game_active = False
+        self.bet_made= False
         self.hand_dealt = False
+        
+        self.bet_buttons = []
+        self.player_buttons = []
+        self.play_button = []

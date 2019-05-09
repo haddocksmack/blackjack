@@ -18,7 +18,7 @@ class Settings():
         # Play Button
         self.play_msg = "PLAY"
         self.play_loc = ((self.screen_width / 2), (self.screen_height / 2))
-        self.play_button_color = (255, 255, 0)
+        self.play_button_color = (0, 0, 255)
         
         # Deal button
         self.deal_msg = "DEAL"

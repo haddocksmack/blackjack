@@ -3,8 +3,8 @@ import pygame.font
 class Button():
     """A class to generate buttons to facilitate gameplay"""
     
-    def __init__(self, settings, stats, screen, msg, loc, button_color,
-                 text_color = (255, 255, 255)):
+    def __init__(self, settings, stats, screen, msg = "", loc = (0, 0),
+                 button_color = (0, 0, 0), text_color = (255, 255, 255)):
         """Initializes button settings"""
         self.settings = settings
         self.stats = stats
