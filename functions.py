@@ -2,15 +2,16 @@ import sys
 
 import pygame
 
-def update_screen(settings, stats, screen, deal_button):
+def update_screen(settings, stats, screen, bet_buttons):
     """Update images on the screen and flip to the new screen"""
     screen.fill(settings.bg_color)
     for card in stats.player_hand:
         card.render_card()
     for card in stats.dealer_hand:
         card.render_card()
-        
-    deal_button.draw_button()
+    
+    for button in bet_buttons:
+        button.draw_button()
     
     pygame.display.flip()
     
@@ -40,7 +41,7 @@ def deal_player(settings, stats):
     stats.player_hand.append(stats.deck.pop(0))
     num = len(stats.player_hand)
     stats.player_hand[-1].topleft = ((20 * num + settings.card_width * num),
-                                     (stats.screen_bottom - 80
+                                     (stats.screen_bottom - 130
                                       - settings.card_height))
     stats.player_hand[-1].get_card_value(stats.player_hand_value)
     stats.player_hand_value += stats.player_hand[-1].value
