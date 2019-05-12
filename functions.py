@@ -1,8 +1,9 @@
 import sys
 
 import pygame
+from random import shuffle
 
-def update_screen(settings, stats, screen):
+def update_screen(settings, stats, screen, score):
     """Update images on the screen and flip to the new screen"""
     screen.fill(settings.bg_color)
     if not stats.game_active:
@@ -10,7 +11,9 @@ def update_screen(settings, stats, screen):
     elif stats.game_active and not stats.hand_dealt:
         for button in stats.bet_buttons:
             button.draw_button()
-    elif stats.hand_dealt:
+            score.show_score()
+            
+    else:
         for card in stats.player_hand:
             card.render_card()
         for card in stats.dealer_hand:
@@ -31,12 +34,31 @@ def check_events(stats):
             mouse_x, mouse_y = pygame.mouse.get_pos()
             if not stats.game_active:
                 check_play_button(stats, mouse_x, mouse_y)
+            elif not stats.bet_round:
+                check_bet_buttons(stats, mouse_x, mouse_y)
                 
 def check_play_button(stats, mouse_x, mouse_y):
     """Checks for mouse click on play button to start game"""
     button_clicked = stats.play_button.rect.collidepoint(mouse_x, mouse_y)
     if button_clicked:
         stats.game_active = True
+            
+def check_bet_buttons(stats, mouse_x, mouse_y):
+    """Checks for mouse click on bet buttons before a deal"""
+    for button in stats.bet_buttons:
+        button_clicked = button.rect.collidepoint(mouse_x, mouse_y)
+        if button_clicked:
+            if button == stats.bet_buttons[0]:
+                stats.bet += 1
+                stats.player_wallet -= 1
+            if button == stats.bet_buttons[1]:
+                stats.bet += 5
+                stats.player_wallet -= 5
+            if button == stats.bet_buttons[2]:
+                stats.bet += 10
+                stats.player_wallet -=10
+            if button == stats.bet_buttons[3]:
+                stats.bet_round = True
             
 def get_deck(Card, settings, stats, screen):
     """Creates a list with all cards in a standard deck of cards"""
@@ -74,6 +96,10 @@ def deal_dealer(settings, stats):
     stats.dealer_hand[-1].get_card_value(stats.dealer_hand_value)
     stats.dealer_hand_value += stats.dealer_hand[-1].value
     
+def shuffle_deck(deck):
+    """Shuffles deck"""
+    shuffle(deck)
+    
 def check_deck(deck, stats):
     """Tools to check current state of deck."""
     # Delete function once game is finished
@@ -96,8 +122,6 @@ def make_buttons(settings, stats, screen, Button):
                          settings.stay_loc, settings.stay_button_color)
     
     # Bet buttons
-    deal_button = Button(settings, stats, screen, settings.deal_msg,
-                         settings.deal_loc, settings.deal_button_color)
     bet_1_button = Button(settings, stats, screen, settings.bet_1_msg,
                          settings.bet_1_loc, settings.bet_1_button_color,
                           (0, 0, 0))
@@ -105,6 +129,8 @@ def make_buttons(settings, stats, screen, Button):
                          settings.bet_5_loc, settings.bet_5_button_color)
     bet_10_button = Button(settings, stats, screen, settings.bet_10_msg,
                          settings.bet_10_loc, settings.bet_10_button_color)
+    deal_button = Button(settings, stats, screen, settings.deal_msg,
+                         settings.deal_loc, settings.deal_button_color)
     
-    stats.bet_buttons = [deal_button, bet_1_button, bet_5_button, bet_10_button]
+    stats.bet_buttons = [bet_1_button, bet_5_button, bet_10_button, deal_button]
     stats.player_buttons = [hit_button, stay_button]

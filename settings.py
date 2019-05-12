@@ -13,7 +13,7 @@ class Settings():
         
         # Button settings
         self.button_x = self.screen_width / 5
-        self.button_y = self.screen_height - 65
+        self.button_y = self.screen_height - 133
         
         # Play Button
         self.play_msg = "PLAY"
