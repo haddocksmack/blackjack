@@ -18,9 +18,6 @@ class Score():
         self.bet_left = 3 * settings.screen_width / 4
         self.bottom_text = settings.screen_height - 40
         
-        # Prepare score image
-        self.prep_wallet()
-        self.prep_bet()
         
     def prep_wallet(self):
         """Turn the wallet info into a rendered image"""
@@ -44,5 +41,7 @@ class Score():
         
     def show_score(self):
         """Draw the score on the screen"""
+        self.prep_wallet()
+        self.prep_bet()
         self.screen.blit(self.wallet_image, self.wallet_rect)
         self.screen.blit(self.bet_image, self.bet_rect)

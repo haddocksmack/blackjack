@@ -11,7 +11,6 @@ def update_screen(settings, stats, screen, score):
     elif stats.game_active and not stats.hand_dealt:
         for button in stats.bet_buttons:
             button.draw_button()
-            score.show_score()
             
     else:
         for card in stats.player_hand:
@@ -21,6 +20,8 @@ def update_screen(settings, stats, screen, score):
         
         for button in stats.player_buttons:
             button.draw_button()
+            
+    score.show_score()
     
     pygame.display.flip()
     
@@ -49,16 +50,20 @@ def check_bet_buttons(stats, mouse_x, mouse_y):
         button_clicked = button.rect.collidepoint(mouse_x, mouse_y)
         if button_clicked:
             if button == stats.bet_buttons[0]:
-                stats.bet += 1
-                stats.player_wallet -= 1
+                if stats.player_wallet > 0:
+                    stats.bet += 1
+                    stats.player_wallet -= 1
             if button == stats.bet_buttons[1]:
-                stats.bet += 5
-                stats.player_wallet -= 5
+                if stats.player_wallet > 4:
+                    stats.bet += 5
+                    stats.player_wallet -= 5
             if button == stats.bet_buttons[2]:
-                stats.bet += 10
-                stats.player_wallet -=10
+                if stats.player_wallet > 9:
+                    stats.bet += 10
+                    stats.player_wallet -=10
             if button == stats.bet_buttons[3]:
-                stats.bet_round = True
+                if stats.bet != 0:
+                    stats.bet_round = True
             
 def get_deck(Card, settings, stats, screen):
     """Creates a list with all cards in a standard deck of cards"""
@@ -80,7 +85,7 @@ def deal_player(settings, stats):
     stats.player_hand.append(stats.deck.pop(0))
     num = len(stats.player_hand)
     stats.player_hand[-1].topleft = ((20 * num + settings.card_width * num),
-                                     (stats.screen_bottom - 130
+                                     (stats.screen_bottom - 198
                                       - settings.card_height))
     stats.player_hand[-1].get_card_value(stats.player_hand_value)
     stats.player_hand_value += stats.player_hand[-1].value
