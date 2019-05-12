@@ -30,7 +30,7 @@ def run_game():
       
     # Start the main game loop
     while True:
-        func.check_events(stats)
+        func.check_events(settings, stats)
         
         if stats.game_active:
             

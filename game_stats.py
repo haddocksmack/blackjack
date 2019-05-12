@@ -13,7 +13,10 @@ class GameStats():
         self.deck = []
         self.discard = []
         self.dealer_hand = []
+        self.dealer_hand_bust = False
         self.player_hand = []
+        self.player_hand_bust = False
+        self.in_player_hand = True
         
         self.game_active = False
         self.bet_round= False
