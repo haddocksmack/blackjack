@@ -77,6 +77,7 @@ def check_player_buttons(settings, stats, mouse_x, mouse_y):
             # stats.player_buttons = [hit_button, stay_button]
             if button == stats.player_buttons[0]:
                 deal_player(settings, stats)
+                check_deck(stats)
             
 def get_deck(Card, settings, stats, screen):
     """Creates a list with all cards in a standard deck of cards"""
@@ -95,37 +96,68 @@ def first_deal(settings, stats):
 def deal_player(settings, stats):
     """Deals a card to the player and displays it"""
     stats.in_player_hand = True
-    stats.hand_value = stats.player_hand_value
     stats.player_hand.append(stats.deck.pop(0))
     num = len(stats.player_hand)
     stats.player_hand[-1].topleft = ((20 * num + settings.card_width * num),
                                      (stats.screen_bottom - 198
                                       - settings.card_height))
-    stats.player_hand[-1].get_card_value(stats)
-    stats.player_hand_value = stats.hand_value
+    get_hand_value(stats)
     
 def deal_dealer(settings, stats):
     """Deals a card to the dealer and displays it"""
     stats.in_player_hand = False
-    stats.hand_value = stats.dealer_hand_value
     stats.dealer_hand.append(stats.deck.pop(0))
     num = len(stats.dealer_hand)
     if num == 1:
         stats.dealer_hand[-1].facedown = True
     stats.dealer_hand[-1].topleft = ((20 * num + settings.card_width * num), 80)
-    stats.dealer_hand[-1].get_card_value(stats)
-    stats.dealer_hand_value = stats.hand_value
+    get_hand_value(stats)
+    
+def get_hand_value(stats):
+    """Determines current value of hand"""
+    if stats.in_player_hand:
+        hand = stats.player_hand
+    else:
+        hand = stats.dealer_hand
+    
+    # Keeps track of aces in hand
+    ace_count = 0
+    
+    for card in hand:
+        if card.rank == 1:
+            ace_count += 1
+        card.get_card_value()
+        stats.hand_value += card.value
+    
+    # Check for aces if hand value exceeds 21
+    while stats.hand_value > 21:
+        if ace_count == 0:
+            break
+        stats.hand_value -= 10
+        ace_count -= 1
+        
+    if stats.hand_value > 21:
+        if stats.in_player_hand:
+            stats.player_hand_bust = True
+        else:
+            stats.dealer_hand_bust = True
+        
+    if stats.in_player_hand:
+        stats.player_hand_value = stats.hand_value
+    else:
+        stats.dealer_hand_value = stats.hand_value
+    stats.hand_value = 0
     
 def shuffle_deck(deck):
     """Shuffles deck"""
     shuffle(deck)
     
-def check_deck(deck, stats):
+def check_deck(stats):
     """Tools to check current state of deck."""
     # Delete function once game is finished
-    for pcard in deck:
+    for pcard in stats.deck:
         print(str(pcard.rank) + " " + pcard.suit)
-    print("There are " + str(len(deck)) + " cards left in the deck.")
+    print("There are " + str(len(stats.deck)) + " cards left in the deck.")
     print("Dealer hand value: " + str(stats.dealer_hand_value))
     print("Player hand vaule: " + str(stats.player_hand_value))
     

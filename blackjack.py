@@ -36,7 +36,7 @@ def run_game():
             
             if stats.bet_round and not stats.hand_dealt:
                 func.first_deal(settings, stats)
-                func.check_deck(deck, stats)
+                func.check_deck(stats)
             
         func.update_screen(settings, stats, screen, score)
         

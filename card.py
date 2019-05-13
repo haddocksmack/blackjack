@@ -17,43 +17,14 @@ class Card():
         self.facedown = False
         self.screen_rect = stats.screen_rect
         
-    def get_card_value(self, stats):
+    def get_card_value(self):
         """Assigns correct score to card"""
         if self.rank > 10:
             self.value = 10
         elif self.rank == 1:
             self.value = 11
         else:
-            self.value = self.rank
-        
-        stats.hand_value += self.value
-            
-        if stats.in_player_hand:
-            hand = stats.player_hand
-            bust = stats.player_hand_bust
-        else:
-            hand = stats.dealer_hand
-            bust = stats.dealer_hand_bust
-            
-        # Ace Check
-        if stats.hand_value > 21:
-            self.ace_check(stats, hand)
-        
-        if stats.hand_value > 21:
-            bust = True
-         
-         
-    def ace_check(self, stats, hand):
-        """Checks for aces and adjusts if needed"""
-        ace_count = 0
-        for card in hand:
-            if card.rank == 1:
-                ace_count += 1
-        
-        while stats.hand_value > 21:
-            if ace_count == 0:
-                break
-            stats.hand_value -= 10
+            self.value = self.rank         
                 
     def get_image(self):
         """Loads and transforms correct image"""
