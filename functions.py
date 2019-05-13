@@ -77,7 +77,11 @@ def check_player_buttons(settings, stats, mouse_x, mouse_y):
             # stats.player_buttons = [hit_button, stay_button]
             if button == stats.player_buttons[0]:
                 deal_player(settings, stats)
-                check_deck(stats)
+                if stats.player_hand_bust:
+                    # End round - print statement is a placehlder
+                    print("You Bust!")
+            if button == stats.player_buttons[1]:
+                dealer_round(settings, stats)
             
 def get_deck(Card, settings, stats, screen):
     """Creates a list with all cards in a standard deck of cards"""
@@ -113,6 +117,19 @@ def deal_dealer(settings, stats):
     stats.dealer_hand[-1].topleft = ((20 * num + settings.card_width * num), 80)
     get_hand_value(stats)
     
+def dealer_round(settings, stats):
+    """Dealer finishes his round, holding at 17 or above"""
+    stats.dealer_hand[0].facedown = False
+    
+    # Hit until dealer hand value is 17 or above
+    while stats.dealer_hand_value < 17:
+        deal_dealer(settings, stats)
+    
+    if stats.dealer_hand_value > 21:
+        stats.dealer_hand_bust = True
+        # End round - print statement is a placeholder
+        print("Dealer busts!")
+
 def get_hand_value(stats):
     """Determines current value of hand"""
     if stats.in_player_hand:
