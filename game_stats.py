@@ -21,6 +21,7 @@ class GameStats():
         self.game_active = False
         self.bet_round= False
         self.hand_dealt = False
+        self.end_round = False
         
         self.bet_buttons = []
         self.player_buttons = []
@@ -52,6 +53,13 @@ class GameStats():
         if len(self.deck) > 14:
             self.deck.extend(self.discard)
             func.shuffle(self.deck)
+            
+        self.dealer_hand_bust = False
+        self.player_hand_bust = False
+        
+        self.bet_round= False
+        self.hand_dealt = False
+        self.end_round = False
             
         self.reset_for_deal()
             

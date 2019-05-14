@@ -30,7 +30,14 @@ def check_events(settings, stats):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
-        if event.type == pygame.MOUSEBUTTONDOWN:
+        if stats.end_round:
+            # Pause game and wait for input - NOT WORKING PROPERLY
+            # stats.reset_for_deal() can be placed back to placeholder
+            # print commands to allow game to function at the end of the
+            # round again.
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                stats.reset_for_deal()
+        elif event.type == pygame.MOUSEBUTTONDOWN:
             # check for collision with buttons and mouseclicks
             mouse_x, mouse_y = pygame.mouse.get_pos()
             if not stats.game_active:
@@ -39,6 +46,7 @@ def check_events(settings, stats):
                 check_bet_buttons(stats, mouse_x, mouse_y)
             elif stats.hand_dealt:
                 check_player_buttons(settings, stats, mouse_x, mouse_y)
+            
                 
 def check_play_button(stats, mouse_x, mouse_y):
     """Checks for mouse click on play button to start game"""
@@ -78,8 +86,10 @@ def check_player_buttons(settings, stats, mouse_x, mouse_y):
             if button == stats.player_buttons[0]:
                 deal_player(settings, stats)
                 if stats.player_hand_bust:
+                    stats.end_round = True
                     # End round - print statement is a placehlder
                     print("You Bust!")
+                    
             if button == stats.player_buttons[1]:
                 dealer_round(settings, stats)
             
@@ -125,10 +135,11 @@ def dealer_round(settings, stats):
     while stats.dealer_hand_value < 17:
         deal_dealer(settings, stats)
     
-    if stats.dealer_hand_value > 21:
-        stats.dealer_hand_bust = True
+    if stats.dealer_hand_bust:
         # End round - print statement is a placeholder
         print("Dealer busts!")
+        
+    stats.end_round = True
 
 def get_hand_value(stats):
     """Determines current value of hand"""
@@ -164,6 +175,23 @@ def get_hand_value(stats):
     else:
         stats.dealer_hand_value = stats.hand_value
     stats.hand_value = 0
+    
+def end_round(stats):
+    """Determines winner of hand and resets for a new round"""
+    if stats.player_hand_bust:
+        stats.player_hand_bust = True
+    elif stats.dealer_hand_bust:
+        stats.player_wallet += (2 * stats.bet)
+    # Tie
+    elif stats.player_hand_value == stats.dealer_hand_value:
+        stats.player_wallet += stats.bet
+    # Player win
+    elif stats.player_hand_value > stats.dealer_hand_value:
+        stats.player_wallet += (2 * stats.bet)
+    # Dealer win - nothing needs done - bet just needs reset to 0
+    
+    stats.reset_hands()
+    
     
 def shuffle_deck(deck):
     """Shuffles deck"""
