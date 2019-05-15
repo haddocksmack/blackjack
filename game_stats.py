@@ -57,7 +57,7 @@ class GameStats():
         self.dealer_hand_bust = False
         self.player_hand_bust = False
         
-        self.bet_round= False
+        self.bet_round = False
         self.hand_dealt = False
         self.end_round = False
             
