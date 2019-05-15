@@ -30,15 +30,8 @@ def check_events(settings, stats):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
-        if stats.end_round and event.type == pygame.MOUSEBUTTONDOWN:
-            # Pause game and wait for input - NOT WORKING PROPERLY
-            # stats.reset_for_deal() can be placed back to placeholder
-            # print commands to allow game to function at the end of the
-            # round again.
-            # if event.type == pygame.MOUSEBUTTONDOWN:
-            mouse_x, mouse_y = pygame.mouse.get_pos()
-            screen_clicked = stats.screen_rect.collidepoint(mouse_x, mouse_y)
-            if screen_clicked:
+        if stats.end_round:
+            if event.type == pygame.MOUSEBUTTONDOWN:
                 stats.reset_hands()
         elif event.type == pygame.MOUSEBUTTONDOWN:
             # check for collision with buttons and mouseclicks
@@ -90,8 +83,8 @@ def check_player_buttons(settings, stats, mouse_x, mouse_y):
                 deal_player(settings, stats)
                 if stats.player_hand_bust:
                     stats.end_round = True
-                    # End round - print statement is a placehlder
-                    print("You Bust!")
+                    print("You bust!")
+                    end_round(stats)
                     
             if button == stats.player_buttons[1]:
                 dealer_round(settings, stats)
@@ -139,7 +132,7 @@ def dealer_round(settings, stats):
         deal_dealer(settings, stats)
     
     if stats.dealer_hand_bust:
-        # End round - print statement is a placeholder
+        end_round(stats)
         print("Dealer busts!")
         
     stats.end_round = True
@@ -192,10 +185,7 @@ def end_round(stats):
     elif stats.player_hand_value > stats.dealer_hand_value:
         stats.player_wallet += (2 * stats.bet)
     # Dealer win - nothing needs done - bet just needs reset to 0
-    
-    stats.reset_hands()
-    
-    
+        
 def shuffle_deck(deck):
     """Shuffles deck"""
     shuffle(deck)

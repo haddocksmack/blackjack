@@ -50,9 +50,10 @@ class GameStats():
         self.discard.extend(self.dealer_hand)
         self.player_hand = []
         self.dealer_hand = []
-        if len(self.deck) > 14:
+        if len(self.deck) < 14:
             self.deck.extend(self.discard)
             func.shuffle(self.deck)
+            self.discard = []
             
         self.dealer_hand_bust = False
         self.player_hand_bust = False
