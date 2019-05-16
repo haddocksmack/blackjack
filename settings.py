@@ -11,6 +11,9 @@ class Settings():
         self.card_width = 138
         self.card_height = 211
         
+        self.num_decks = 6
+        self.redeal_num = 52
+        
         # Button settings
         self.button_x = self.screen_width / 5
         self.button_y = self.screen_height - 133

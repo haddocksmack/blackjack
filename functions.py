@@ -32,7 +32,7 @@ def check_events(settings, stats):
             sys.exit()
         if stats.end_round:
             if event.type == pygame.MOUSEBUTTONDOWN:
-                stats.reset_hands()
+                stats.reset_hands(settings)
         elif event.type == pygame.MOUSEBUTTONDOWN:
             # check for collision with buttons and mouseclicks
             mouse_x, mouse_y = pygame.mouse.get_pos()
@@ -83,7 +83,6 @@ def check_player_buttons(settings, stats, mouse_x, mouse_y):
                 deal_player(settings, stats)
                 if stats.player_hand_bust:
                     stats.end_round = True
-                    print("You bust!")
                     end_round(stats)
                     
             if button == stats.player_buttons[1]:
@@ -92,8 +91,8 @@ def check_player_buttons(settings, stats, mouse_x, mouse_y):
 def get_deck(Card, settings, stats, screen):
     """Creates a list with all cards in a standard deck of cards"""
     suits = ['clubs', 'hearts', 'spades', 'diamonds']    
-    stats.deck = [Card(rank, suit, settings, stats, screen) for rank
-                  in range(1,14) for suit in suits]
+    stats.deck.extend([Card(rank, suit, settings, stats, screen) for rank
+                  in range(1,14) for suit in suits])
 
 def first_deal(settings, stats):
     """Deals out initial hand to dealer and player"""
@@ -125,16 +124,11 @@ def deal_dealer(settings, stats):
     
 def dealer_round(settings, stats):
     """Dealer finishes his round, holding at 17 or above"""
-    stats.dealer_hand[0].facedown = False
-    
     # Hit until dealer hand value is 17 or above
     while stats.dealer_hand_value < 17:
         deal_dealer(settings, stats)
     
-    if stats.dealer_hand_bust:
-        end_round(stats)
-        print("Dealer busts!")
-        
+    end_round(stats)    
     stats.end_round = True
 
 def get_hand_value(stats):
@@ -174,6 +168,7 @@ def get_hand_value(stats):
     
 def end_round(stats):
     """Determines winner of hand and resets for a new round"""
+    stats.dealer_hand[0].facedown = False
     if stats.player_hand_bust:
         stats.player_hand_bust = True
     elif stats.dealer_hand_bust:

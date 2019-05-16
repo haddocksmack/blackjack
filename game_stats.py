@@ -3,7 +3,7 @@ import functions as func
 class GameStats():
     """A class to store the stats of Blackjack"""
     
-    def __init__(self, screen):
+    def __init__(self, settings, screen):
         """Initializes stats"""
         self.screen = screen
         self.screen_rect = self.screen.get_rect()
@@ -41,7 +41,7 @@ class GameStats():
         self.reset_for_deal()
         self.player_wallet = 100
     
-    def reset_hands(self):
+    def reset_hands(self, settings):
         """
         Moves cards from hands to discards and checks to see if shuffle
         is needed.
@@ -50,7 +50,7 @@ class GameStats():
         self.discard.extend(self.dealer_hand)
         self.player_hand = []
         self.dealer_hand = []
-        if len(self.deck) < 14:
+        if len(self.deck) < settings.redeal_num:
             self.deck.extend(self.discard)
             func.shuffle(self.deck)
             self.discard = []

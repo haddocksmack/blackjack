@@ -13,7 +13,7 @@ def run_game():
     settings = Settings()
     screen = pygame.display.set_mode((settings.screen_width,
                                       settings.screen_height))
-    stats = GameStats(screen)
+    stats = GameStats(settings, screen)
     
     pygame.display.set_caption('Blackjack')
     
@@ -24,7 +24,8 @@ def run_game():
     score = Score(settings, stats, screen)
     
     # Make and shuffle the deck
-    func.get_deck(Card, settings, stats, screen)
+    for i in range(settings.num_decks):
+        func.get_deck(Card, settings, stats, screen)
     deck = stats.deck
     func.shuffle(deck)
       
@@ -36,7 +37,7 @@ def run_game():
             
             if stats.bet_round and not stats.hand_dealt:
                 func.first_deal(settings, stats)
-                func.check_deck(stats)
+                # func.check_deck(stats)
             
         func.update_screen(settings, stats, screen, score)
         
